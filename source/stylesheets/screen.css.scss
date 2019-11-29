@@ -76,6 +76,7 @@ html, body {
     display: block;
     max-width: 100%;
     margin-bottom: $logo-margin;
+    margin-left: 32px;
   }
 
   &>.search {
@@ -400,6 +401,7 @@ html, body {
     margin-bottom: 1em;
     overflow: auto;
     th,td {
+      border: 1px solid #ddd;
       text-align: left;
       vertical-align: top;
       line-height: 1.6;
@@ -409,6 +411,7 @@ html, body {
     }
 
     th {
+      background-color: #87cbff;
       padding: 5px 10px;
       border-bottom: 1px solid #ccc;
       vertical-align: bottom;
@@ -546,6 +549,7 @@ html, body {
       background-color: $code-annotation-bg;
       padding: $code-annotation-padding 2em;
       color: #eee;
+      font-size: 18px;
     }
   }
 }

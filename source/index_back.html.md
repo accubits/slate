@@ -617,13 +617,11 @@ Codes  |Description
 
 ##Payment-Corner-SDK for PHP
 
-[![Version](https://img.shields.io/badge/php-v%207.0^-brightgreen.svg)]()
-
+###Requirements
+ * PHP >= 7.0
  
-### Installation
-Install the package with:
-
-````composer require accubits/payment-corner-sdk-php````
+###Installation
+<pre>composer require accubits/payment-corner-sdk-php</pre>
 
 The recommended way to install the Payment Corner SDK is with Composer. Composer is a dependency management tool for PHP 
 that allows you to declare the dependencies your project needs and installs them into your project
@@ -651,26 +649,8 @@ After installing, you need to require Composer’s autoloader:
 You can find out more on how to install Composer, configure autoloading, and other
  best-practices for defining dependencies at [getcomposer.org](https://getcomposer.org/).
 
-### Usage
-The package needs to be configured with your account's email , passpword and client id, Client id can be obtained from your Payment Corner Dashboard.
 
-````php
-<?php
-require __DIR__.'/vendor/autoload.php';
-
-try{
-    $paymentCorner = new PaymentCorner('user@mail.com','password','client_id',devMode);
-}catch (PaymentCornerExceptions $exception){
-    echo $exception->getMessage();
-}
-````
-
-### Enable  Production Environment
-By default the PaymentCorner is initialed as Sandbox environment.
-Set  devMode, `true` while Initalizing the SDK to enable Production environment and `false` to enable Sandbox environment .
-
-###FX transaction
-
+###Usage
 > Usage Example
 
 ````````php
@@ -678,7 +658,8 @@ Set  devMode, `true` while Initalizing the SDK to enable Production environment 
 require __DIR__.'/vendor/autoload.php';
 
 try{
-       $paymentCorner = new PaymentCorner('user@domain.com','password','xxxx-xxxx-xxxxx-xxxxx',true);    $transaction = new Transactions();
+    $paymentCorner = new PaymentCorner('user email','password','client_id',devMode);
+    $transaction = new Transactions();
        $transaction->setCurrencyToBuy('USD');
        $transaction->setCurrencyToSell('GBP');
        $transaction->setAmount(150);
@@ -692,186 +673,6 @@ try{
 
 ````````
 
-#### Required Parameters
-
-Parameter  |Description
---------- | -----------
-currency_to_buy |  ISO 4217 format (e.g. EUR).
-currency_to_sell  ISO 4217 format (e.g. EUR).
-side_of_fx_tx | Choose which currency to buy or sell.
-amount | Amount of the currency to buy or sell.
-fx_tx_gtc | General terms and conditions.
-
-
-#### Optional Parameters
-
-Parameter |Description
---------- | -----------
-fx_tx_date |  Value date. ISO 8601 format (YYYY-MM-DD).
-amount_to_buy | Amount to buy.	
-amount_to_sell | Amount to sell.	
-fx_tx_unique_id | Idempotency key.
-
-
-###Retrieve FX transaction(s)
-
-> Usage Example
-
-````````php
-<?php
-require __DIR__.'/vendor/autoload.php';
-
-try{
-   $paymentCorner = new PaymentCorner('user@domain.com','password','xxxx-xxxx-xxxxx-xxxxx',true);
-   $transaction = new Transactions();
-   $paymentCorner->retrieveFxTransaction($transaction);
-}catch (PaymentCornerExceptions $exception){
-   echo $exception->getMessage();
-
-}
-
-````````
-
-#### Optional Parameters
-
-Parameter |Description
---------- | -----------
-ref | Is a unique reference for each FX transaction that can be used for searching the FX transaction via the API and user interface.
-fx_tx_status | FX transaction status.
-currency_to_buy |The ISO 4217 format (e.g. EUR).
-currency_to_sell |The ISO 4217 format (e.g. EUR).
-fx_tx_id |One or several ID(s) to retrieve one or several successfull FX transaction(s).
-fx_tx_creation_date_from| ISO 8601 format (e.g. 2018-11-30T16:30:00+00:00). Specify a time and date (FROM) and it will return a range of conversions created during this period.
-fx_tx_creation_date_last | ISO 8601 format (e.g. 2018-11-30T16:30:00+00:00). Specify a time and date (TO) and it will return a range of conversions created during this period.
-fx_tx_update_date_from  | ISO 8601 format (e.g. 2018-11-30T16:30:00+00:00). Specify a time and date (FROM) and it will return a range of conversions that have been updated during this period, ie if the date has changed / rolled.
-fx_tx_update_date_last  | ISO 8601 format (e.g. 2018-11-30T16:30:00+00:00). Specify a time and date (TO) and this will return a range of conversions that have been updated during this period, ie if the date has changed / rolled.
-tx_date_from | ISO 8601 format (e.g. 2018-11-30T16:30:00+00:00).
-tx_date_to |  ISO 8601 format (e.g. 2018-11-30T16:30:00+00:00).
-currency_pair | Two ISO 4217 format concatenated (e.g. EURCHF).
-min_amount_to_buy  | Minimum amount on buy side.
-max_amount_to_buy  | Maximum amount on buy side.
-min_amount_to_sell  | Minimum amount on sell side.
-max_amount_to_sell  | Maximum amount on sell side.
-date_tx_debit_first | ISO 8601 format (e.g. 2018-11-30T16:30:00+00:00).
-date_tx_debit_last  | ISO 8601 format (e.g. 2018-11-30T16:30:00+00:00).
-fx_tx_unique_id | Idempotency key for each FX transaction to prevent duplicate requests.
-page_nb | Page number.
-result_per_page | Number of results per page.
-sort_order | Change the sort order.
-sort_asc_to_desc | Sort in ascending or descending order (default: asc).
-
-###Change FX conversion value date
-
-> Usage Example
-
-````````php
-<?php
-require __DIR__.'/vendor/autoload.php';
-
-try{
-   $paymentCorner = new PaymentCorner('user@domain.com','password','xxxx-xxxx-xxxxx-xxxxx',true);
-   $transaction = new Transactions();
-   $transaction->setPath("832d46cd-d0ec-4717-9435-cc34d587dc95");
-   $paymentCorner->retrieveFxTransactionRecord($transaction);
-}catch (PaymentCornerExceptions $exception){
-   echo $exception->getMessage();
-}
-
-````````
-#### Required Parameters
-
-Parameter|Description
---------- | -----------
-path | UUID that is generated for each FX transaction and which can be used for searching.
-new_date_fx_tx  |  New value date.
-
-###Change FX Conversion Delivery Date Quotation
-
-> Usage Example
-
-````````php
-<?php
-require __DIR__.'/vendor/autoload.php';
-
-try{
-   $paymentCorner = new PaymentCorner('user@domain.com','password','xxxx-xxxx-xxxxx-xxxxx',true);
-   $transaction = new Transactions();
-   $transaction->setPath("832d46cd-d0ec-4717-9435-cc34d587dc95");
-   $transaction->newDateFxTx("2019-01-14T14:30:00+00:00");
-   $paymentCorner->changeFxConversionDeliveryDateQuotation($transaction);
-}catch (PaymentCornerExceptions $exception){
-   echo $exception->getMessage();
-}
-
-````````
-#### Required Parameters
-
-Parameter |Description
-------- | -----------
-path |   UUID that is generated for each FX transaction and which can be used for searching.
-new_date_fx_tx |  New FX transaction settlement date. 	
-
-### FX market rate w/ mark-up
-
-> Usage Example
-
-````````php
-<?php
-require __DIR__.'/vendor/autoload.php';
-
-try {
-     $paymentCorner = new PaymentCorner('user@domain.com','password','xxxx-xxxx-xxxxx-xxxxx',true);
-     $rates = new Rates();
-     $rates->setCurrencyToBuy('EUR');
-     $rates->setCurrencyToSell('EUR');
-     $rates->setSideOfFxTx('buy');
-     $rates->setAmount('1000');
-     $paymentCorner->fxMarketRatewMarkUp($rates);
- } catch (PaymentCornerExceptions $exception){
-     echo $exception->getMessage();
- }
-
-````````
-
-#### Required Parameters
-
-Parameter |Description
- ------- | -----------
-currency_to_buy | ISO 4217 format (e.g. EUR).
-currency_to_sell| ISO 4217 format (e.g. EUR).	
-side_of_fx_tx | Choose which currency to buy or sell.	
-amount | Amount of the fixed buy or sell currency.
-
-####  Optional Parameters
-
-Parameter |Description
---------- | ------- | -----------
-fx_tx_date|ISO 8601 format (YYYY-MM-DD). If not specified, we will provide the spot (+2 days) rate.
-
-	
-### FX Market Rate
-
-> Usage Example
-
-````````php
-<?php
-require __DIR__.'/vendor/autoload.php';
-
-try {
-    $paymentCorner = new PaymentCorner('user@domain.com','password','xxxx-xxxx-xxxxx-xxxxx',true);
-    $rates = new Rates();
-    $rates->setCurrencyPair('EURCHF');
-    $paymentCorner->fxMarketRate($rates);
-} catch (PaymentCornerExceptions $exception){
-
-    echo $exception->getMessage();
-}
-
-````````
-
-Parameter  |Description
-------- | -----------
-currency_pair| Two ISO 4217 format concatenated (e.g. EURCHF).
 
 
 
